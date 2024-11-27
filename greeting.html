@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>初心者向けホームページテンプレート tp_beginner8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ここにサイト説明を入れます">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="contents">
+
+<header>
+    <div>
+        <h1>福岡工業大学　PBL クラ研究室　県警察プロジェクト
+        </h1>
+    </div>
+</header>
+
+<div id="menubar">
+<nav>
+<ul>
+<li><a href="index.html">ホーム</a></li>
+<li><a href="greeting.html">ビジュアル</a></li>
+<li><a href="menu.html">シミュレーション</a></li>
+<!-- <li><a href="access.html">アクセス</a></li> -->
+</ul>
+</nav>
+</div>
+<!--/#menubar-->
+
+<main>
+
+<section>
+
+<h2>Visualization</h2>
+    <p xlass="c">TableauでのVisualization(可視化)<br>
+        福岡県の事故件数5年分(2018~2022年)のオープンデータをTableauにインポートし、あらかじめ決めておいた条件(事故類型、路上形状など)を基にマップにプロットします。またプロットを発生市区町村、天候別、発生時間別で表示可能にします。以下が現在Tableauで行っている可視化の映像です。</p>
+        <video controls>
+            <source src="./images/Tableau分析.mp4" type="video/mp4" autoplay muted>
+        </video>
+
+        <!-- Google Mapを表示するためのdiv要素-->
+    <div id="map" style="height: 500px; width: 100%"></div>
+
+<!-- <p class="c">また、以下のコードを参考にSUMO シミュレーターで作成したシミュレーションをUnityとWebシミュレーションゲームを作成予定です。<br>
+    <p class="l">Unityを使ったVisualization(可視化)</p>
+<a href="https://github.com/DarraghMac97/Real-time-Traffic-Simulation-with-3D-Visualisation"></a>
+</p> -->
+
+<!-- <p class="c">ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。<br>
+</p> -->
+
+<!-- <p class="c">ここに挨拶文を書きます。サンプルテキスト。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。サンプルテキスト。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。サンプルテキスト。</p>
+
+<p class="c">ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。ここに挨拶文を書きます。<br>
+ここに挨拶文を書きます。サンプルテキスト。<br>
+</p> -->
+
+</section>
+
+</main>
+
+</div>
+<!--/#contents-->
+
+<footer>
+<small>Copyright&copy; <a href="index.html">サイト名</a> All Rights Reserved.</small>
+<span class="pr"><a href="https://template-party.com/" target="_blank">《Web Design:Template-Party》</a></span>
+</footer>
+
+<!--ページの上部へ戻るボタン-->
+<div class="pagetop"><a href="#"><i class="fas fa-angle-double-up"></i></a></div>
+
+</div>
+<!--/#container-->
+
+<!--jQueryの読み込み-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Google Maps APIの読み込み-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByTTaBIHoMUHSx5gAvLwweF14Uinr4OfE&callback=initMap" async defer></script>
+
+<!--このテンプレート専用のスクリプト-->
+<script src="js/main.js"></script>
+
+<!-- map.jsの内容 -->
+<script>
+    let map, infoWindow;
+    
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 6,
+      });
+      infoWindow = new google.maps.InfoWindow();
+    
+      const locationButton = document.createElement("button");
+    
+      locationButton.textContent = "Pan to Current Location";
+      locationButton.classList.add("custom-map-control-button");
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+      locationButton.addEventListener("click", () => {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+    
+              infoWindow.setPosition(pos);
+              infoWindow.setContent("Location found.");
+              infoWindow.open(map);
+              map.setCenter(pos);
+            },
+            () => {
+              handleLocationError(true, infoWindow, map.getCenter());
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      });
+    }
+    
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(map);
+    }
+    
+    window.initMap = initMap;
+</script>
+</body>
+</html>
